@@ -1,0 +1,30 @@
+#!/bin/bash
+
+OPTION=$1
+CONTAINER_NAME=challenge_kindalab
+
+usage(){
+	echo -e "Usage: './run <arg>'"
+	echo -e "\t<arg>: one of 'build_app', 'dev' or 'app'"
+}
+
+build_app(){
+	docker build -t $CONTAINER_NAME .
+}
+
+dev() {
+	docker run --rm -it -v "$PWD:/app" "$CONTAINER_NAME" bash
+}
+
+
+"$@"
+
+if [[ ! "$?" == 0 ]]; then
+	usage 
+	exit 1
+fi
+
+if [[ ! "$1" ]]; then
+	usage
+	exit 1
+fi
